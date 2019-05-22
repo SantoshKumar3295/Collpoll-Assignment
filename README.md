@@ -1,6 +1,6 @@
 # Collpoll-Assignment : TodoList
 
-<h4>Follow the step to run this application</h4>
+<h4>Follow these step to run this application</h4>
 
 1) git clone this repository
 2) Create database "<db_name>" in mysql
