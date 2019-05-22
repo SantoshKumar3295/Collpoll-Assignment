@@ -1,15 +1,20 @@
-var app = angular.module('ToDoListApp', ['ngRoute']);
+var app = angular.module('ToDoListApp', ['ngRoute', 'ui.bootstrap']);
 
 app.config(function($routeProvider){
     $routeProvider
         .when('/',
         {
-            controller: 'ListTasksController',
+            controller: 'UserLoginController',
             templateUrl: '/views/login.html'
+        })
+        .when('/allTask',
+        {
+            controller: 'TasksController',
+            templateUrl: '/views/tasks.html'
         })
         .when('/addTask',
         {
-            controller: 'AddTasksController',
+            controller: 'AddTaskController',
             templateUrl: '/views/addTasks.html'
         })
         .when('/editTask:id',
@@ -25,5 +30,4 @@ app.config(function($routeProvider){
         .otherwise({
             redirectTo: '/#'
         })
-
 });

@@ -1,101 +1,55 @@
-app.controller('AddTasksController', function($scope , $location, DataTasksFactory, AddTasksFactory, $route ){
-		//Setting Now + 5 minutes as default date for datetimepicker.
-	$scope.now = new Date();
-	$scope.now.setMinutes($scope.now.getMinutes() + 5);
-	this.addTask = function(addNewTaskCtrl){
-		AddTasksFactory.save(addNewTaskCtrl);
-		DataTasksFactory.addTask(addNewTaskCtrl);
-		
-		window.setTimeout(function() {
-			$location.path('/');
-        }, 10); 
-		
-	};
-});
+app.controller('UserLoginController', function($rootScope, $timeout, $scope, $http, $location){
+      $rootScope.user_obj = {};
 
-app.controller('EditTasksController', function($scope, $location, ListTasksByIdFactory, EditTasksFactory, $route, $routeParams ){
-			//Retrieve selected task
-	var selectedTask = ListTasksByIdFactory.query({id:$routeParams.id});
-	selectedTask.$promise.then(function(result){
-			//Populate scope variables
-		$scope.editTaskCtrl = $scope.editTaskCtrl || {};
-		$scope.editTaskCtrl.taskname = result.taskname;
-		$scope.editTaskCtrl.performdate = new Date(result.performdate);
-		$scope.editTaskCtrl.category = result.category;
-		$scope.editTaskCtrl.priority = result.priority;
-		$scope.editTaskCtrl.isdone = result.isdone;
-	});
-	
-	this.editTask = function(editTaskCtrl){
-		EditTasksFactory.update({id:$routeParams.id},editTaskCtrl);
-		
-		window.setTimeout(function() {
-			$location.path('/');
-        }, 10); 
-		
-	};
-});
-	
-app.controller('ListTasksController', function($scope, $http){
-
-    $scope.user_obj = {};
-
-    $scope.login = function() {
-        $http.post('login', $scope.user_obj)
+      $scope.login = function() {
+         $http.post('login', $scope.user_obj)
             .then(function successCallBack(response) {
                 var user = response.data;
                 console.log("user data", user);
                 if(user && user.id) {
-                    fetchTask(user);
+                    $rootScope.user_obj.isLoggedIn = true;
+                    $rootScope.user_obj.userId = user.id;
+                    $timeout(function() {
+                        $location.path('/allTask');
+                    }, 10);
                 }
             })
-    }
+      }
+})
 
-    function fetchTask(user) {
-        $http.post('task/all', user)
+app.controller('TasksController', function($rootScope, $scope, $http, TasksService){
+    $scope.task_obj = {};
+
+    if($rootScope.user_obj && $rootScope.user_obj.isLoggedIn) {
+        var postData = {};
+        postData.id = $rootScope.user_obj.userId;
+        postData.name = $rootScope.user_obj.name;
+        TasksService.initTaskList(postData)
             .then(function successCallBack(response) {
-                console.log("repsone daata", response.data);
+                $scope.task_obj.task_list = response;
+            })
+    } else {
+        //Goto the login page
+    }
+})
+
+app.controller('AddTaskController', function($rootScope, $scope, $filter, $http, $timeout, $location){
+    $scope.add_task = {};
+    $scope.add_task.now = new Date();
+    $scope.add_task.now.setMinutes($scope.add_task.now.getMinutes() + 5);
+
+    $scope.addTask = function() {
+        var postData = {};
+        postData.date = $filter('date')($scope.add_task.date,'yyyy-MM-dd');
+        postData.name = $scope.add_task.name;
+        postData.description = $scope.add_task.desc;
+        postData.user_id = $rootScope.user_obj.userId;
+
+        $http.post('task/addTask/'+  postData.user_id, postData)
+            .then(function successCallBack(response) {
+               $timeout(function() {
+                   $location.path('/allTask');
+               }, 10);
             })
     }
-});
-
-app.controller('TasksPrioritiesListController', function($scope, TasksPrioritiesListFactory) {
-	$scope.items = TasksPrioritiesListFactory.query();
-});
-
-app.controller('TasksActionsController', function($scope, $location, ListTasksByIdFactory, EditTasksFactory, DeleteTasksFactory) {
-    
-	$scope.hoverIn = function(){
-        this.Icon = true;
-    };
-
-    $scope.hoverOut = function(){
-        this.Icon = false;
-    };
-    
-    $scope.checkTask = function(taskid) {
-    	var selectedTask = ListTasksByIdFactory.query({id:taskid});
-    	selectedTask.$promise.then(function(result){
-    			//Checking task makes isdone = "true"
-    		result.isdone = "true";
-    		EditTasksFactory.update({id:taskid},result);
-    		
-    		window.setTimeout(function() {
-    			location.reload(true);
-            }, 10);
-    		
-    	});
-     };
-     
-    // <<-- EditTask has its separate controller: EditTasksController.
-     
-    $scope.deleteTask = function(taskid) {
-        DeleteTasksFactory.delete_task({id:taskid},null);
-        
-		window.setTimeout(function() {
-			location.reload(true);
-        }, 10);
-		
-     };
-});
-    
+})

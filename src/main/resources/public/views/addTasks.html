@@ -1,0 +1,52 @@
+<div class="container">
+
+    <!-- ADD NEW TASKS FORM -->
+    <form name="addTasks" autocomplete="off" novalidate>
+
+        <!-- TITLE -->
+        <h1><span class="glyphicon glyphicon-time"></span>Add Tasks</h1>
+
+        <!-- TASK NAME -->
+        <fieldset class="form-group" ng-class="{ 'has-error' : addTasks.taskname.$invalid && !addTasks.taskname.$pristine }">
+            <label class="control-label">Task Name</label>
+            <input class="form-control" ng-model="add_task.taskname" ng-minlength="2" ng-maxlength="30" name="taskname" placeholder="Write task name" required></input>
+            <p ng-show="addTasks.taskname.$error.minlength" class="help-block">Task Name is too short.</p>
+            <p ng-show="addTasks.taskname.$error.maxlength" class="help-block">Task Name is too long.</p>
+        </fieldset>
+
+        <!-- PERFORM DATE -->
+        <fieldset class="form-group">
+
+        </fieldset>
+
+        <div>
+        <label class="control-label">Scheduled Date</label>
+        <div>
+            <input alt-input-formats="altInputFormats" class="form-control" close-text="Close"
+                   is-open="add_task.isDatepickerOpen" ng-model="add_task.date" ng-required="true"
+                   type="text" uib-datepicker-popup="dd.MM.yyyy"/>
+            <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="add_task.isDatepickerOpen = !add_task.isDatepickerOpen">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+          </span>
+        </div>
+        </div>
+
+        <!-- ISDONE to false -->
+        <div ng-init="add_task.state = 'false'"></div>
+
+        <!-- RETURN & SUBMIT  BUTTONS -->
+        <fieldset class="form-group">
+            <!-- RETURN  -->
+            <a href="#/">
+                <button type=button class="btn btn-primary" >
+                    <span class="glyphicon glyphicon-arrow-left" ></span>
+                </button>
+            </a>
+            <!-- SUBMIT  -->
+            <input type="submit" class="btn btn-primary pull-right" ng-click="addTask()" />
+        </fieldset>
+    </form>
+
+</div>

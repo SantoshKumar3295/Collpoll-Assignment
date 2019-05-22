@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -34,5 +35,16 @@ public class TaskResource {
     @PostMapping(value = "/all")
     public List<Task> getAll(@RequestBody final User user) {
           return taskRepository.getAllTask(user.getId());
+    }
+
+    @PostMapping(value = "/addTask/{user_id}")
+    public void addTask(@RequestBody Task task, @PathVariable("user_id") Integer id) {
+        User user = new User();
+        user.setId(id);
+
+        task.setUser(user);
+
+        System.out.println(task.getUser());
+        taskRepository.save(task);
     }
 }

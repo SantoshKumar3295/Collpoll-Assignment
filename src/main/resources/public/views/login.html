@@ -5,6 +5,9 @@
     <title>Title</title>
 </head>
 <body>
-<div> Name : <input ng-model="user_obj.name"> <button ng-click="login()"></button></div>
+<div>
+    <div  ng-if="!user_obj.isLoggedIn">Name : <input ng-model="user_obj.name"> <button ng-click="login()">Login</button>
+    </div>
+</div>
 </body>
 </html>

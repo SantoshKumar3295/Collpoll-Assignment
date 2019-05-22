@@ -1,19 +1,12 @@
-<html>
- <body>
- <div>
-   <div ng-repeat="user in user_list">
-    <h2>Name</h2><p>{{user.name}}</p>
-    <h2>Team</h2><p>{{user.team_name}}</p>
+<div class="container">
+   <div ng-repeat="task in task_obj.task_list">
+    <h2>Name</h2><p>{{task.name}}</p>
+    <h2>Team</h2><p>{{task.description}}</p>
    </div>
 
-  <button ng-click="user_obj.show_add = true; user_obj.new_user = {}">ADD</button>
-
-  <div ng-show="user_obj.show_add">
-   <div>Name : <input ng-model="user_obj.new_user.name">
-    Team : <input ng-model="user_obj.new_user.teamName">
-   </div>
-   <div><button ng-click="addUser()">Submit</button></div>
-  </div>
+  <a href="#/addTask">
+   <button type=button class="btn btn-primary" >
+    <span class="glyphicon glyphicon-plus" ></span>
+   </button>
+  </a>
  </div>
- </body>
-</html>
