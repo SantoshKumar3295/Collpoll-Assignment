@@ -1,0 +1,16 @@
+.right-header-icon {
+    position : absolute;
+    float : left;
+}
+
+.row-card {
+    background-color: white;
+    border: 1px solid lightgray;
+    border-radius: 1px;
+    margin-bottom: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    box-shadow: 2px 2px 1px #eee;
+    -webkit-box-shadow: 2px 2px 1px #eee;
+    -moz-box-shadow: 2px 2px 1px #eee;
+}

@@ -21,11 +21,9 @@ public class Task {
     @JsonBackReference
     private User user;
 
-/*
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "task")
     @JsonManagedReference
-    private List<SubTask> subTaskList;
-*/
+    private List<SubTask> subtasks;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "date")

@@ -39,6 +39,25 @@ app.controller('TasksController', function($timeout, $scope, $http, UserService,
             })
      }
 
+    $scope.addSubTask = function(task_id, subtask) {
+        var url = "subTask/addSubTask/"
+
+        $http.post(url+task_id, subtask)
+            .then(function successCallBack(response) {
+                console.log("subtask added")
+            })
+    }
+
+    $scope.deleteSubTask = function(subtask_id) {
+        var url = "subTask/deleteSubTask/";
+
+        $http.delete(url+subtask_id)
+            .then(function successCallBack(response) {
+                console.log("subtask got deleted");
+            })
+    }
+
+
     $scope.saveTask = function(task) {
         $http.put('task/editTask', task)
             .then(function successCallBack(response) {

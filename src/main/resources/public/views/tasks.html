@@ -1,33 +1,62 @@
 <div class="container">
-    <div>
-        filter by date
-        <input alt-input-formats="altInputFormats" ng-change="filterByDate(date)" class="form-control" close-text="Close"
+
+    <h1>Your Tasks <span class="right-header-icon" style="width:70%;">
+        <input style="width: 200px; float : right;" uib-popover="Filter by Date" alt-input-formats="altInputFormats" ng-change="filterByDate(date)" class="form-control" close-text="Close"
                is-open="isDatepickerOpen" ng-model="task_obj.date" ng-required="true"
                type="text" uib-datepicker-popup="dd.MM.yyyy"/>
-        <span class="input-group-btn">
+        <span class="input-group-btn" style="float:right;">
             <button type="button" class="btn btn-default" ng-click="isDatepickerOpen = !isDatepickerOpen">
               <i class="glyphicon glyphicon-calendar"></i>
             </button>
         </span>
+        </span>
+        <a href="#/addTask" class="right-header-icon" style="margin-left:40px;">
+            <button type=button class="btn btn-primary" >
+                <span class="glyphicon glyphicon-plus" ></span>
+            </button>
+        </a></h1>
+
+    <div class="row">
+       <div class="col-lg-12 col-md-12 col-sm-12 row-card" ng-repeat="task in task_obj.task_list">
+           <div ng-show="!task.show_edit">
+               <div class="col-lg-9 col-md-9 col-sm-9">
+                   <h4>{{task.name}}</h4>
+                   </h6>{{task.description}}</h6>
+               </div>
+               <div class="col-lg-3 col-md-3 col-sm-3">
+                   <button class="btn btn-primary pull-right" ng-click="task.show_edit = !task.show_edit">
+                       <span class="glyphicon glyphicon-pencil" ></span>
+                   </button>
+                   <button class="btn btn-primary pull-right" ng-click="deleteTask(task.id)">
+                       <span class="glyphicon glyphicon-trash" ></span>
+                   </button>
+                   <button class="btn btn-primary pull-right" ng-click="task.subtasks = (task.subtasks == undefined ? [] : task.subtasks); task.subtasks.unshift({})">
+                       <span class="glyphicon glyphicon-plus" ></span>
+                   </button>
+               </div>
+           </div>
+           <div ng-show="task.show_edit">
+               <input ng-model="task.description">
+               <button ng-click="saveTask(task)">save</button>
+           </div>
+           <div class="row">
+               <div class="col-lg-12 col-md-12 col-sm-12 row-card" ng-repeat="subtask in task.subtasks">
+                   <div ng-if="subtask.id == undefined">
+                       <input placeholder="Add Subtak descrption" ng-model="subtask.description">
+                       <button class="btn btn-primary pull-right" ng-click="addSubTask(task.id, subtask)">Submit
+                       </button>
+                       <button class="btn pull-right" ng-click="task.subtasks.pop()">Cancel
+                       </button>
+                   </div>
+                   <div ng-if="subtask.id != undefined">
+                       <h4>{{subtask.name}}</h4>
+                       </h6>{{subtask.description}}</h6>
+                       <button class="btn btn-primary pull-right" ng-click="deleteSubTask(subtask.id)">
+                           <span class="glyphicon glyphicon-trash" ></span>
+                       </button>
+                   </div>
+               </div>
+           </div>
+       </div>
     </div>
-
-   <div ng-repeat="task in task_obj.task_list">
-       <div ng-show="!task.show_edit">
-    <h2>Name</h2><p>{{task.name}}</p>
-    <h2>Team</h2><p>{{task.description}}</p>
-       <button ng-click="task.show_edit = !task.show_edit">edit</button>
-
-       </div>
-       <div ng-show="task.show_edit">
-           <input ng-model="task.description">
-           <button ng-click="saveTask(task)">save</button>
-       </div>
-       <div ng-click="deleteTask(task.id)">delete</div>
-   </div>
-
-  <a href="#/addTask">
-   <button type=button class="btn btn-primary" >
-    <span class="glyphicon glyphicon-plus" ></span>
-   </button>
-  </a>
  </div>

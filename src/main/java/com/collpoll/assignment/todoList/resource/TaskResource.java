@@ -65,4 +65,5 @@ public class TaskResource {
     public void deleteTask(@PathVariable("id") Integer id) {
         taskRepository.delete(id);
     }
+
 }
