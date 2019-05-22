@@ -26,6 +26,9 @@ public class SubTaskResource {
 
     @DeleteMapping(value = "/deleteSubTask/{id}")
     public void deleteSubTask(@PathVariable("id") Integer id) {
+        /*SubTask subTask = new SubTask();
+        subTask.setId(id);
+        subTask.setTask(null);*/
         subTaskRepository.delete(id);
     }
 }

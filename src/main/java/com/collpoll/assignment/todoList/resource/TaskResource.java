@@ -63,6 +63,9 @@ public class TaskResource {
 
     @DeleteMapping(value = "/deleteTask/{id}")
     public void deleteTask(@PathVariable("id") Integer id) {
+      /*  Task task = new Task();
+        task.setId(id);
+        task.setUser(null);*/
         taskRepository.delete(id);
     }
 

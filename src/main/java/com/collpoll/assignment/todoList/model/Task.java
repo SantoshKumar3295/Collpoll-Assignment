@@ -21,9 +21,12 @@ public class Task {
     @JsonBackReference
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "task")
+    @OneToMany(orphanRemoval=true, cascade= {CascadeType.ALL, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "task")
     @JsonManagedReference
     private List<SubTask> subtasks;
+
+   /* @Column(name = "user_id")
+    private Integer user_id;*/
 
     @Temporal(TemporalType.DATE)
     @Column(name = "date")
@@ -41,14 +44,6 @@ public class Task {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Date getDate() {
@@ -73,6 +68,22 @@ public class Task {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public List<SubTask> getSubtasks() {
+        return subtasks;
+    }
+
+    public void setSubtasks(List<SubTask> subtasks) {
+        this.subtasks = subtasks;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 //    public List<SubTask> getSubTaskList() {

@@ -14,9 +14,9 @@ public class User {
     @Column(name = "id")
     private Integer id;
 
-    /*@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(orphanRemoval=true, cascade= {CascadeType.ALL, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
-    private List<Task> taskList;*/
+    private List<Task> taskList;
 
     @Column(name = "name")
     private String name;
@@ -37,11 +37,11 @@ public class User {
         this.name = name;
     }
 
-   /* public List<Task> getTaskList() {
+    public List<Task> getTaskList() {
         return taskList;
     }
 
     public void setTaskList(List<Task> taskList) {
         this.taskList = taskList;
-    }*/
+    }
 }

@@ -1,5 +1,20 @@
 var app = angular.module('ToDoListApp', ['ngRoute', 'ui.bootstrap']);
 
+app.run(['$rootScope', '$location', function ($rootScope, $location, UserService) {
+    $rootScope.$on('$routeChangeStart', function (event) {
+        var user = UserService.getUser();
+
+        if (!user.isLoggedIn) {
+            console.log('DENY');
+            event.preventDefault();
+            $location.path('/');
+        }
+        else {
+            console.log('ALLOW');
+        }
+    });
+}]);
+
 app.config(function($routeProvider){
     $routeProvider
         .when('/',
