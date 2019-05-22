@@ -6,29 +6,30 @@ import com.collpoll.assignment.todoList.repository.SubTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/*
+***Subtask REST APIs
+ */
 
 @RestController
 @RequestMapping(value = "/subTask")
 public class SubTaskResource {
 
-    //Subtask APIs
     @Autowired
     SubTaskRepository subTaskRepository;
 
-    @PostMapping(value = "/addSubTask/{id}")
-    public void addSubTask(@RequestBody SubTask subTask, @PathVariable("id") Integer id) {
+    @PostMapping(value = "/addSubTask/{task_id}")
+    public SubTask addSubTask(@RequestBody SubTask subTask, @PathVariable("task_id") Integer task_id) {
+
         Task task = new Task();
-        task.setId(id);
+        //To create subtask with task_id
+        task.setId(task_id);
 
         subTask.setTask(task);
-        subTaskRepository.save(subTask);
+        return subTaskRepository.save(subTask);
     }
 
     @DeleteMapping(value = "/deleteSubTask/{id}")
     public void deleteSubTask(@PathVariable("id") Integer id) {
-        /*SubTask subTask = new SubTask();
-        subTask.setId(id);
-        subTask.setTask(null);*/
         subTaskRepository.delete(id);
     }
 }

@@ -5,6 +5,10 @@ import com.collpoll.assignment.todoList.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/*
+* Basic level of auth
+* TODO : CONVERT THIS INTO BETTER AUTH
+ */
 @RestController
 @RequestMapping(value = "")
 public class UserResource  {
@@ -13,10 +17,17 @@ public class UserResource  {
     UserRepository userRepository;
 
     @PostMapping(value = "/login")
-    public User persist(@RequestBody final User user) {
-        for(User obj : userRepository.findAll()) {
-            if(obj.getName().equalsIgnoreCase(user.getName())) return obj;
-        }
-        return null;
+    public User loginUser(@RequestBody final User user) {
+        return userRepository.getUser(user.getName(), user.getPassword());
+    }
+
+    @PostMapping(value = "/createUser")
+    public User createuser(@RequestBody final User user) {
+        User user_check = userRepository.getUser(user.getName(), user.getPassword());
+        //check if user is already present
+        if(user_check == null)
+            return userRepository.save(user);
+        else
+            return user_check;
     }
 }

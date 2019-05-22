@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<div>
-    <div  ng-if="!user_obj.isLoggedIn">Name : <input ng-model="user_obj.name"> <button ng-click="login()">Login</button>
+<div class="container">
+    <h1>Login</h1>
+    <div class="row">
+        <input ng-model="user_obj.name" placeholder="Username" class="pull-left default-margin">
+        <input type="password" ng-model="user_obj.password" placeholder="password" class="default-margin pull-left">
+        <button ng-click="login()" class="btn btn-primary pull-left" class="form-control default-margin" ng-disabled="user_obj.name == undefined || user_obj.password == undefined">Login</button>
+        <button ng-click="create()" class="btn btn-primary pull-left default-margin" ng-disabled="user_obj.name == undefined || user_obj.password == undefined">Create</button>
     </div>
 </div>
-</body>
-</html>

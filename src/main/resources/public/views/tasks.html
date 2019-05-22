@@ -1,7 +1,7 @@
 <div class="container">
 
     <h1>Your Tasks <span class="right-header-icon" style="width:70%;">
-        <input style="width: 200px; float : right;" uib-popover="Filter by Date" alt-input-formats="altInputFormats" ng-change="filterByDate(date)" class="form-control" close-text="Close"
+        <input style="width: 200px; float : right; margin-left:30px;" uib-popover="Filter by Date" alt-input-formats="altInputFormats" ng-change="filterByDate(date)" class="form-control" close-text="Close"
                is-open="isDatepickerOpen" ng-model="task_obj.date" ng-required="true"
                type="text" uib-datepicker-popup="dd.MM.yyyy"/>
         <span class="input-group-btn" style="float:right;">
@@ -11,47 +11,47 @@
         </span>
         </span>
         <a href="#/addTask" class="right-header-icon" style="margin-left:40px;">
-            <button type=button class="btn btn-primary" >
+            <button placeholder="Add Task" type=button class="btn btn-primary" >
                 <span class="glyphicon glyphicon-plus" ></span>
             </button>
         </a></h1>
 
     <div class="row">
-       <div class="col-lg-12 col-md-12 col-sm-12 row-card" ng-repeat="task in task_obj.task_list">
+       <div class="col-lg-12 col-md-12 col-sm-12 row-card " ng-repeat="task in task_obj.task_list">
            <div ng-show="!task.show_edit">
                <div class="col-lg-9 col-md-9 col-sm-9">
-                   <h4>{{task.name}}</h4>
-                   </h6>{{task.description}}</h6>
+                   <h3 class="default-margin">{{task.description}}</h3>
+                   <h6 class="default-margin">{{task.date | date :'MM/dd/yyyy'}}</h6>
                </div>
                <div class="col-lg-3 col-md-3 col-sm-3">
-                   <button class="btn btn-primary pull-right" ng-click="task.show_edit = !task.show_edit">
+                   <button class="btn btn-primary pull-right default-margin" ng-click="task.show_edit = !task.show_edit">
                        <span class="glyphicon glyphicon-pencil" ></span>
                    </button>
-                   <button class="btn btn-primary pull-right" ng-click="deleteTask(task.id)">
+                   <button class="btn btn-primary pull-right default-margin" ng-click="deleteTask(task.id)">
                        <span class="glyphicon glyphicon-trash" ></span>
                    </button>
-                   <button class="btn btn-primary pull-right" ng-click="task.subtasks = (task.subtasks == undefined ? [] : task.subtasks); task.subtasks.unshift({})">
+                   <button class="btn btn-primary pull-right default-margin" ng-click="task.subtasks = (task.subtasks == undefined ? [] : task.subtasks); task.subtasks.unshift({})">
                        <span class="glyphicon glyphicon-plus" ></span>
                    </button>
                </div>
            </div>
            <div ng-show="task.show_edit">
-               <input ng-model="task.description">
-               <button ng-click="saveTask(task)">save</button>
+               <input class="form-control" ng-model="task.description">
+               <button ng-click="saveTask(task)" class="default-margin btn btn-primary pull-right">Save</button>
+               <button ng-click="task.show_edit = false;" class="default-margin btn pull-right">Cancel</button>
            </div>
            <div class="row">
-               <div class="col-lg-12 col-md-12 col-sm-12 row-card" ng-repeat="subtask in task.subtasks">
+               <div class="col-lg-12 col-md-12 col-sm-12 row-card" ng-repeat="subtask in task.subtasks track by $index">
                    <div ng-if="subtask.id == undefined">
-                       <input placeholder="Add Subtak descrption" ng-model="subtask.description">
-                       <button class="btn btn-primary pull-right" ng-click="addSubTask(task.id, subtask)">Submit
+                       <textarea class="form-control" placeholder="Add Subtak descrption" ng-model="subtask.description"></textarea>
+                       <button class="default-margin btn btn-primary pull-right" ng-click="addSubTask(task.id, subtask); ">Submit
                        </button>
-                       <button class="btn pull-right" ng-click="task.subtasks.pop()">Cancel
+                       <button class="default-margin btn pull-right" ng-click="task.subtasks.splice($index, 1)">Cancel
                        </button>
                    </div>
                    <div ng-if="subtask.id != undefined">
-                       <h4>{{subtask.name}}</h4>
-                       </h6>{{subtask.description}}</h6>
-                       <button class="btn btn-primary pull-right" ng-click="deleteSubTask(subtask.id)">
+                       </h6 class="default-margin">{{subtask.description}}</h6>
+                       <button class="btn btn-primary pull-right" ng-click="deleteSubTask(subtask.id, task)">
                            <span class="glyphicon glyphicon-trash" ></span>
                        </button>
                    </div>

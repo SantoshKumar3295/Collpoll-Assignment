@@ -5,6 +5,10 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import java.util.List;
 
+/*
+**User is root entity which holds user information like name, password etc;
+ */
+
 @Entity
 @Table(name = "users", catalog = "santo_db")
 public class User {
@@ -20,6 +24,9 @@ public class User {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "password")
+    private String password;
 
     public Integer getId() {
         return id;
@@ -43,5 +50,13 @@ public class User {
 
     public void setTaskList(List<Task> taskList) {
         this.taskList = taskList;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

@@ -1,15 +1,21 @@
 var app = angular.module('ToDoListApp', ['ngRoute', 'ui.bootstrap']);
 
-app.run(['$rootScope', '$location', function ($rootScope, $location, UserService) {
+app.run(['$rootScope', '$location', 'UserService', function ($rootScope, $location, UserService) {
     $rootScope.$on('$routeChangeStart', function (event) {
-        var user = UserService.getUser();
 
-        if (!user.isLoggedIn) {
+        if(UserService == undefined) {
+            $location.path('/');
+            return;
+        }
+
+        if (!UserService.getUser().isLoggedIn && $location.path() != '/') {
             console.log('DENY');
+
             event.preventDefault();
             $location.path('/');
-        }
-        else {
+        } else if($location.path() == '/' && UserService.getUser().isLoggedIn){
+            event.preventDefault();
+        } else {
             console.log('ALLOW');
         }
     });
@@ -31,16 +37,6 @@ app.config(function($routeProvider){
         {
             controller: 'AddTaskController',
             templateUrl: '/views/addTasks.html'
-        })
-        .when('/editTask:id',
-        {
-            controller: 'EditTasksController',
-            templateUrl: '/views/editTasks.html'
-        })
-        .when('/completedTasks',
-        {
-            controller: 'ListTasksController',
-            templateUrl: '/views/completedTasks.html'
         })
         .otherwise({
             redirectTo: '/#'

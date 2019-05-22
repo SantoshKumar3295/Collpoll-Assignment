@@ -1,26 +1,44 @@
+/*
+**Handles user login flow
+*/
+
 app.controller('UserLoginController', function($timeout, $scope, $http, $location, UserService){
       $scope.user_obj = {};
+
+      $scope.create = function() {
+        $http.post('createUser', $scope.user_obj)
+            .then(function successCallBack(response) {
+                initUser(response);
+            })
+      }
 
       $scope.login = function() {
          console.log("user obj", $scope.user_obj);
          $http.post('login', $scope.user_obj)
             .then(function successCallBack(response) {
-                var user = response.data;
-                console.log("user data", user);
-                if(user && user.id) {
-                   user.isLoggedIn = true;
-                   user.userId = user.id;
-
-                   UserService.initUser(user);
-
-                    $timeout(function() {
-                        $location.path('/allTask');
-                    }, 10);
-                }
+                initUser(response);
             })
+      }
+
+      function initUser(response) {
+            var user = response.data;
+            console.log("user data", user);
+            if(user && user.id) {
+               user.isLoggedIn = true;
+               user.userId = user.id;
+
+               UserService.initUser(user);
+
+                $timeout(function() {
+                    $location.path('/allTask');
+                }, 10);
+            }
       }
 })
 
+/*
+**Handles Task operations : List, Edit & Delete
+*/
 app.controller('TasksController', function($timeout, $scope, $http, UserService, TasksService){
     $scope.task_obj = {};
 
@@ -44,35 +62,41 @@ app.controller('TasksController', function($timeout, $scope, $http, UserService,
 
         $http.post(url+task_id, subtask)
             .then(function successCallBack(response) {
-                console.log("subtask added")
+                angular.extend(subtask, response.data);
             })
     }
 
-    $scope.deleteSubTask = function(subtask_id) {
+    $scope.deleteSubTask = function(subtask_id, task) {
         var url = "subTask/deleteSubTask/";
 
         $http.delete(url+subtask_id)
             .then(function successCallBack(response) {
-                console.log("subtask got deleted");
+                angular.forEach(task.subtasks, function(subtask, index) {
+                    if(subtask.id == subtask_id) task.subtasks.splice(index, 1);
+                })
             })
     }
-
 
     $scope.saveTask = function(task) {
         $http.put('task/editTask', task)
             .then(function successCallBack(response) {
-                console.log("hmmmmm");
+                angular.extend(task, response.data);
             })
     }
 
     $scope.deleteTask = function(id) {
         $http.delete('task/deleteTask/'+id)
             .then(function successCallBack(response) {
-                console.log("task got delted");
+                angular.forEach($scope.task_obj.task_list, function(task, index) {
+                    if(task.id = id) $scope.task_obj.task_list.splice(index, 1);
+                })
             })
     }
 })
 
+/*
+**Handles Add of Task
+*/
 app.controller('AddTaskController', function($scope, $filter, $http, $timeout, $location, UserService){
     $scope.add_task = {};
     $scope.add_task.now = new Date();
@@ -81,9 +105,10 @@ app.controller('AddTaskController', function($scope, $filter, $http, $timeout, $
     $scope.addTask = function() {
         var postData = {};
         postData.date = $filter('date')($scope.add_task.date,'yyyy-MM-dd');
-        postData.name = $scope.add_task.name;
+        postData.description = $scope.add_task.description;
         $http.post('task/addTask/'+  UserService.getUser().id, postData)
             .then(function successCallBack(response) {
+               //Redirect back to task page
                $timeout(function() {
                    $location.path('/allTask');
                }, 10);
