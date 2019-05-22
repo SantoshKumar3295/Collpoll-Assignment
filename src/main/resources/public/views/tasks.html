@@ -1,7 +1,28 @@
 <div class="container">
+    <div>
+        filter by date
+        <input alt-input-formats="altInputFormats" ng-change="filterByDate(date)" class="form-control" close-text="Close"
+               is-open="isDatepickerOpen" ng-model="task_obj.date" ng-required="true"
+               type="text" uib-datepicker-popup="dd.MM.yyyy"/>
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="isDatepickerOpen = !isDatepickerOpen">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+        </span>
+    </div>
+
    <div ng-repeat="task in task_obj.task_list">
+       <div ng-show="!task.show_edit">
     <h2>Name</h2><p>{{task.name}}</p>
     <h2>Team</h2><p>{{task.description}}</p>
+       <button ng-click="task.show_edit = !task.show_edit">edit</button>
+
+       </div>
+       <div ng-show="task.show_edit">
+           <input ng-model="task.description">
+           <button ng-click="saveTask(task)">save</button>
+       </div>
+       <div ng-click="deleteTask(task.id)">delete</div>
    </div>
 
   <a href="#/addTask">

@@ -37,6 +37,11 @@ public class TaskResource {
           return taskRepository.getAllTask(user.getId());
     }
 
+    @PostMapping(value = "/all/{date}")
+    public List<Task> getFilterTask(@RequestBody final User user, @PathVariable("date") String date) {
+        return taskRepository.getFilterTask(user.getId(), date);
+    }
+
     @PostMapping(value = "/addTask/{user_id}")
     public void addTask(@RequestBody Task task, @PathVariable("user_id") Integer id) {
         User user = new User();
@@ -46,5 +51,18 @@ public class TaskResource {
 
         System.out.println(task.getUser());
         taskRepository.save(task);
+    }
+
+    @PutMapping(value = "/editTask")
+    public void editTask(@RequestBody @Valid Task task) {
+        User user = new User();
+        user.setId(taskRepository.getUserId(task.getId()));
+        task.setUser(user);
+        taskRepository.saveAndFlush(task);
+    }
+
+    @DeleteMapping(value = "/deleteTask/{id}")
+    public void deleteTask(@PathVariable("id") Integer id) {
+        taskRepository.delete(id);
     }
 }

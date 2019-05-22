@@ -1,10 +1,29 @@
-app.service('TasksService', function($http, $q){
+app.service('UserService', function() {
+    var user = {};
+
+    this.initUser = function(user_obj) {
+        user = user_obj;
+    }
+
+    this.getUser = function() {
+        return user;
+    }
+});
+
+app.service('TasksService', function($http, $q, UserService, UtilService){
   var tasksList = [];
   var self = this;
 
-  this.initTaskList = function(user){
+  this.initTaskList = function(date){
      var deferred = $q.defer();
-     $http.post('task/all', user)
+     console.log(date);
+
+     var date_str = "";
+
+     if(date != undefined)
+        date_str = "/"+UtilService.filterDate(date);
+
+     $http.post('task/all'+ date_str, UserService.getUser())
          .then(function successCallBack(response) {
             tasksList = response.data;
             deferred.resolve(tasksList);
@@ -15,11 +34,11 @@ app.service('TasksService', function($http, $q){
      return deferred.promise;
   };
 
-  this.addTask = function(newtask) {
-      TasksList.push(newtask);
-  };
-
-  this.getTasks = function(){
-      return TasksList;
-  };
 })
+
+app.service('UtilService', function($http, $q, $filter){
+   this.filterDate = function(date) {
+     return $filter('date')(date,'yyyy-MM-dd');
+   }
+})
+
