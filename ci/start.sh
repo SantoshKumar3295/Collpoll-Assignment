@@ -13,11 +13,14 @@ cd $( dirname $0 )
 cd ..
 echo "Current directory is $PWD" >&2
 
+#Update the current packages
+apt-get update
+
 # Install project specific requirements
 apt-get install mvn
 
-# Creating jar file of project
-mvn clean install
+# Uncomment in case of build failure. Creating Clean jar file of project
+# mvn clean install
 
-# Run the jar file to start the server
-java -jar target/todoList-0.0.1-SNAPSHOT.jar
+# Run the server
+mvn spring-boot:run
