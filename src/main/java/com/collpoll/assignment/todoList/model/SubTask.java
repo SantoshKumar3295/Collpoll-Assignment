@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 
-/*
+/*@Author : Santosh Kumar
+*
 ***@Subtak has a foreign key (task_id) which is the pk id of task
 *  Subtask (Many) to (1) Task relation
 *  Task entity will delete this entity (row in table) when the Task is deleted.

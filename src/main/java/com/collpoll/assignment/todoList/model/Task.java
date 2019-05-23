@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-/*
+/*@Author : Santosh Kumar
 **@Task has foreign key (user_id) which is the pk id of user entity
 * Task (Many) to 1 User relation
  */

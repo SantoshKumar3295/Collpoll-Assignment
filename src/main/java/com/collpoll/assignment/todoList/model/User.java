@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import java.util.List;
 
-/*
+/*@Author : Santosh Kumar
 **User is root entity which holds user information like name, password etc;
  */
 
