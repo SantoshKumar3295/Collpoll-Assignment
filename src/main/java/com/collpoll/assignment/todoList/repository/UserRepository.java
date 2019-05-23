@@ -7,9 +7,12 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-
+/*
+ ***@Author : Santosh Kumar
+ * Custom queries based on our requirement
+ */
 public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query(value = "SELECT * FROM Users u WHERE name = :name and password = :password", nativeQuery = true)
-    public User gtUser(@Param("name") String name, @Param("password") String password);
+    public User getUser(@Param("name") String name, @Param("password") String password);
 }

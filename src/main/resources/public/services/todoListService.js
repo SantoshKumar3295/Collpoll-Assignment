@@ -1,3 +1,4 @@
+//Holds the user information
 app.service('UserService', function() {
     var user = {};
 
@@ -10,6 +11,7 @@ app.service('UserService', function() {
     }
 });
 
+//Holds Task property and Task operation function
 app.service('TasksService', function($http, $q, UserService, UtilService){
   var tasksList = [];
   var self = this;

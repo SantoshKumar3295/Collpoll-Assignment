@@ -3,11 +3,13 @@ var app = angular.module('ToDoListApp', ['ngRoute', 'ui.bootstrap']);
 app.run(['$rootScope', '$location', 'UserService', function ($rootScope, $location, UserService) {
     $rootScope.$on('$routeChangeStart', function (event) {
 
+        //If UserService is not injected properly
         if(UserService == undefined) {
             $location.path('/');
             return;
         }
 
+        //Validate UserService logged in status.
         if (!UserService.getUser().isLoggedIn && $location.path() != '/') {
             console.log('DENY');
 

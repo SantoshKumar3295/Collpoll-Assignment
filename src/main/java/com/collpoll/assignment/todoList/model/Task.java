@@ -7,9 +7,15 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-/*@Author : Santosh Kumar
-**@Task has foreign key (user_id) which is the pk id of user entity
-* Task (Many) to 1 User relation
+/*@Authore : SantoshKuamr
+**@Task table has a FOREIGN KEY (user_id) which refrence to (id) of User table;
+* Task has (Many) to (1) relation with User.
+* If any User gets deleted then it's child Task containing user_id (id of user) will also gets
+    deleted because while creating Task table we will add on delete cascade on foreign key
+    "..FOREIGN KEY(user_id) REFERENCES User(id) On Delete Cascade".
+    for which JPA has "orphanRemoval=true, cascade= {CascadeType.ALL, CascadeType.REMOVE}"
+    to perform same task. Also due to our same relation between task & subtask, subtask will also
+    gets delted.
  */
 
 @Entity
@@ -21,17 +27,18 @@ public class Task {
     @Column(name = "id")
     private Integer id;
 
+    //Here FOREIGN KEY IS "user_id" which is referencing to Users(id)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonBackReference
     private User user;
 
+    //This realtion is saying "If subtask has FK reference to task's id, then if task gets
+    //deleted then delete subtask whose FK pointing to id of task"
     @OneToMany(orphanRemoval=true, cascade= {CascadeType.ALL, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "task")
     @JsonManagedReference
     private List<SubTask> subtasks;
 
-   /* @Column(name = "user_id")
-    private Integer user_id;*/
 
     @Temporal(TemporalType.DATE)
     @Column(name = "date")
@@ -90,12 +97,4 @@ public class Task {
     public void setUser(User user) {
         this.user = user;
     }
-
-//    public List<SubTask> getSubTaskList() {
-//        return subTaskList;
-//    }
-//
-//    public void setSubTaskList(List<SubTask> subTaskList) {
-//        this.subTaskList = subTaskList;
-//    }
 }

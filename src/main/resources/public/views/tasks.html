@@ -37,7 +37,7 @@
            </div>
            <div ng-show="task.show_edit">
                <input class="form-control" ng-model="task.description">
-               <button ng-click="saveTask(task)" class="default-margin btn btn-primary pull-right">Save</button>
+               <button ng-click="saveTask(task); task.show_edit = false;" class="default-margin btn btn-primary pull-right">Save</button>
                <button ng-click="task.show_edit = false;" class="default-margin btn pull-right">Cancel</button>
            </div>
            <div class="row">

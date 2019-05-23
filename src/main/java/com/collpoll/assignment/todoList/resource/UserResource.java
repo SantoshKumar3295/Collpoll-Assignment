@@ -5,8 +5,9 @@ import com.collpoll.assignment.todoList.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-/*
-* Basic level of auth
+
+/*@Author : Santosh Kumar
+ ***User REST APIs*** Basic level of auth
 * TODO : CONVERT THIS INTO BETTER AUTH
  */
 @RestController

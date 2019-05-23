@@ -9,6 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/*
+ ***@Author : Santosh Kumar
+ * Custom queries based on our requirement
+ */
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Integer> {
 

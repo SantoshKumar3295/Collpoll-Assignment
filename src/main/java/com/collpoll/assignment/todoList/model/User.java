@@ -5,8 +5,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import java.util.List;
 
-/*@Author : Santosh Kumar
-**User is root entity which holds user information like name, password etc;
+/*@Author : Santosh Kuamr
+ **User table holds user information like name, password etc;
+ * User has One to many reation with Task, as Every user can hold multiple task.
  */
 
 @Entity
@@ -18,6 +19,8 @@ public class User {
     @Column(name = "id")
     private Integer id;
 
+    //This realtion is saying "If Task has FK reference to user's id, then if user gets
+    //deleted then delete Task whose FK pointing to id of User"
     @OneToMany(orphanRemoval=true, cascade= {CascadeType.ALL, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
     private List<Task> taskList;

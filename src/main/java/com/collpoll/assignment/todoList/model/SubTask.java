@@ -5,10 +5,13 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.*;
 
 /*@Author : Santosh Kumar
-*
-***@Subtak has a foreign key (task_id) which is the pk id of task
-*  Subtask (Many) to (1) Task relation
-*  Task entity will delete this entity (row in table) when the Task is deleted.
+***@Subtak table has a FOREIGN KEY (task_id) which refrence to (id) of Task table;
+*  Subtask has (Many) to (1) relation with Task.
+*  If any Task gets deleted then it's child subtask containing task_id (id of task) will also gets
+    deleted because while creating SubTask table we will add on delete cascade on foreign key
+    "..FOREIGN KEY(task_id) REFERENCES Task(id) On Delete Cascade".
+    for which JPA has "orphanRemoval=true, cascade= {CascadeType.ALL, CascadeType.REMOVE}"
+    to perform same task.
  */
 
 @Entity
@@ -20,6 +23,7 @@ public class SubTask {
     @Column(name = "id")
     private Integer id;
 
+    //Here FOREIGN KEY IS "task_id" which is referencing to Task(id)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id", referencedColumnName = "id")
     @JsonBackReference

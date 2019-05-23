@@ -1,10 +1,8 @@
-/*
-**Handles user login flow
-*/
-
+//Handles user login flow. This controller not being used other than login.html
 app.controller('UserLoginController', function($timeout, $scope, $http, $location, UserService){
       $scope.user_obj = {};
 
+      //Create user
       $scope.create = function() {
         $http.post('createUser', $scope.user_obj)
             .then(function successCallBack(response) {
@@ -12,14 +10,20 @@ app.controller('UserLoginController', function($timeout, $scope, $http, $locatio
             })
       }
 
+      //Login user
       $scope.login = function() {
-         console.log("user obj", $scope.user_obj);
+         var name_check = $scope.user_obj.name == undefined || $scope.user_obj.name.length < 1;
+         var password_check = $scope.user_obj.password == undefined || $scope.user_obj.password.length < 1;
+
+         if(name_check || password_check) return;
+
          $http.post('login', $scope.user_obj)
             .then(function successCallBack(response) {
                 initUser(response);
             })
       }
 
+      //Start initialising user object
       function initUser(response) {
             var user = response.data;
             console.log("user data", user);
@@ -27,8 +31,10 @@ app.controller('UserLoginController', function($timeout, $scope, $http, $locatio
                user.isLoggedIn = true;
                user.userId = user.id;
 
+               //This service will init user object which can be use anywhere
                UserService.initUser(user);
 
+                //Redirect to home page
                 $timeout(function() {
                     $location.path('/allTask');
                 }, 10);
@@ -38,19 +44,24 @@ app.controller('UserLoginController', function($timeout, $scope, $http, $locatio
 
 /*
 **Handles Task operations : List, Edit & Delete
+*This controller not being used other than tasks.html
 */
 app.controller('TasksController', function($timeout, $scope, $http, UserService, TasksService){
     $scope.task_obj = {};
 
-     $scope.filterByDate = function(){
+
+    $scope.filterByDate = function(){
+        //To apply proper digest wait for 10ms
         $timeout(function() {
                initTask($scope.task_obj.date);
         }, 10);
      }
 
+     //Initialise the task list
      initTask();
 
      function initTask(date) {
+        //This service will fetch all task list of current user
         TasksService.initTaskList(date)
             .then(function successCallBack(response) {
                 $scope.task_obj.task_list = response;
@@ -71,6 +82,8 @@ app.controller('TasksController', function($timeout, $scope, $http, UserService,
 
         $http.delete(url+subtask_id)
             .then(function successCallBack(response) {
+
+                //delete subtask from inmemory
                 angular.forEach(task.subtasks, function(subtask, index) {
                     if(subtask.id == subtask_id) task.subtasks.splice(index, 1);
                 })
@@ -87,6 +100,7 @@ app.controller('TasksController', function($timeout, $scope, $http, UserService,
     $scope.deleteTask = function(id) {
         $http.delete('task/deleteTask/'+id)
             .then(function successCallBack(response) {
+                //delete Task from inmemory
                 angular.forEach($scope.task_obj.task_list, function(task, index) {
                     if(task.id = id) $scope.task_obj.task_list.splice(index, 1);
                 })
@@ -96,9 +110,12 @@ app.controller('TasksController', function($timeout, $scope, $http, UserService,
 
 /*
 **Handles Add of Task
+* This controller not being used other than addTasks.html
 */
 app.controller('AddTaskController', function($scope, $filter, $http, $timeout, $location, UserService){
     $scope.add_task = {};
+
+    //Initialise the current time for datepicker
     $scope.add_task.now = new Date();
     $scope.add_task.now.setMinutes($scope.add_task.now.getMinutes() + 5);
 
@@ -106,6 +123,7 @@ app.controller('AddTaskController', function($scope, $filter, $http, $timeout, $
         var postData = {};
         postData.date = $filter('date')($scope.add_task.date,'yyyy-MM-dd');
         postData.description = $scope.add_task.description;
+
         $http.post('task/addTask/'+  UserService.getUser().id, postData)
             .then(function successCallBack(response) {
                //Redirect back to task page
