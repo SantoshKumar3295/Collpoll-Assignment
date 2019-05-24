@@ -62,12 +62,10 @@ app.controller('UserLoginController', function($timeout, $scope, $http, $locatio
 */
 app.controller('TasksController', function($timeout, $scope, $http, UserService, TasksService){
     $scope.task_obj = {};
-
-
-    $scope.filterByDate = function(){
+    $scope.filterByDate = function(date){
         //To apply proper digest wait for 10ms
         $timeout(function() {
-               initTask($scope.task_obj.date);
+               initTask(date);
         }, 10);
      }
 
@@ -105,7 +103,10 @@ app.controller('TasksController', function($timeout, $scope, $http, UserService,
     }
 
     $scope.saveTask = function(task) {
-        $http.put('task/editTask', task)
+        var postData = angular.copy(task);
+        postData.description = postData.description_new;
+
+        $http.put('task/editTask', postData)
             .then(function successCallBack(response) {
                 angular.extend(task, response.data);
             })
@@ -116,7 +117,7 @@ app.controller('TasksController', function($timeout, $scope, $http, UserService,
             .then(function successCallBack(response) {
                 //delete Task from inmemory
                 angular.forEach($scope.task_obj.task_list, function(task, index) {
-                    if(task.id = id) $scope.task_obj.task_list.splice(index, 1);
+                    if(task.id == id) $scope.task_obj.task_list.splice(index, 1);
                 })
             })
     }

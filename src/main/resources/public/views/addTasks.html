@@ -1,3 +1,4 @@
+<meta http-equiv="pragma" content="no-cache" />
 <div class="container">
 
     <!-- ADD NEW TASKS FORM -->
@@ -9,7 +10,7 @@
         <!-- TASK NAME -->
         <fieldset class="form-group" ng-class="{ 'has-error' : addTasks.taskname.$invalid && !addTasks.taskname.$pristine }">
             <label class="control-label">Task Name</label>
-            <input class="form-control" ng-model="add_task.description" ng-minlength="2" ng-maxlength="30" name="taskname" placeholder="Write task name" required></input>
+            <input required name="description" class="form-control" ng-model="add_task.description" ng-minlength="2" ng-maxlength="30" name="taskname" placeholder="Write task name" required></input>
             <p ng-show="addTasks.taskname.$error.minlength" class="help-block">Task Name is too short.</p>
             <p ng-show="addTasks.taskname.$error.maxlength" class="help-block">Task Name is too long.</p>
         </fieldset>
@@ -17,7 +18,7 @@
         <div>
         <label class="control-label">Scheduled Date</label>
         <div>
-            <input style="float:left; width:200px;" alt-input-formats="altInputFormats" class="form-control" close-text="Close"
+            <input readonly="true" required name="date" style="float:left; width:200px;" alt-input-formats="altInputFormats" class="form-control" close-text="Close"
                    is-open="add_task.isDatepickerOpen" ng-model="add_task.date" ng-required="true"
                    type="text" uib-datepicker-popup="dd.MM.yyyy"/>
             <span class="input-group-btn">
@@ -29,7 +30,7 @@
         </div>
 
         <!-- RETURN & SUBMIT  BUTTONS -->
-        <fieldset class="default-margin form-group">
+        <fieldset class="form-group" style="margin-top : 20px;">
             <!-- RETURN  -->
             <a href="#/allTask">
                 <button type=button class="btn btn-primary" >
@@ -37,7 +38,7 @@
                 </button>
             </a>
             <!-- SUBMIT  -->
-            <input type="submit" class="btn btn-primary pull-right" ng-click="addTask()" />
+            <button ng-click="addTask()" type="submit" class="btn btn-primary pull-right" ng-disabled="addTasks.$invalid">Submit</button>
         </fieldset>
     </form>
 

@@ -1,21 +1,26 @@
 <div class="container">
 
-    <h1>Your Tasks <span class="right-header-icon" style="width:70%;">
-        <input style="width: 200px; float : right; margin-left:30px;" uib-popover="Filter by Date" alt-input-formats="altInputFormats" ng-change="filterByDate(date)" class="form-control" close-text="Close"
+    <h1 style="padding-bottom:10px; border-bottom:1px solid;">Your Tasks <span class="right-header-icon" style="width:70%;">
+        <input readonly="true" style="width: 200px; float : right; margin-left:30px;" uib-popover="Filter by Date" popover-placement="bottom" ng-change="filterByDate(task_obj.date)" class="form-control"
                is-open="isDatepickerOpen" ng-model="task_obj.date" ng-required="true"
                type="text" uib-datepicker-popup="dd.MM.yyyy"/>
-        <span class="input-group-btn" style="float:right;">
+        <span ng-show="task_obj.date == undefined" class="input-group-btn" style="float:right;">
             <button type="button" class="btn btn-default" ng-click="isDatepickerOpen = !isDatepickerOpen">
               <i class="glyphicon glyphicon-calendar"></i>
             </button>
         </span>
+        <div class="input-group-btn pull-right" ng-if="task_obj.date != undefined">
+           <button ng-click="filterByDate(); task_obj.date = undefined" class="btn btn-default" type="reset"><i class="glyphicon glyphicon-remove"></i></button>
+        </div>
         </span>
         <a href="#/addTask" class="right-header-icon" style="margin-left:40px;">
-            <button placeholder="Add Task" type=button class="btn btn-primary" >
+            <button type=button class="btn btn-primary" >
                 <span class="glyphicon glyphicon-plus" ></span>
             </button>
         </a></h1>
-
+    <div class="row" ng-if="task_obj.task_list.length == 0">
+        <h4 style="margin-left:30%">You don't have any task <span ng-if="task_obj.date != undefined"> for {{task_obj.date | date : 'dd-MM-yyyy'}}</span></h4>
+    </div>
     <div class="row">
        <div class="col-lg-12 col-md-12 col-sm-12 row-card " ng-repeat="task in task_obj.task_list">
            <div ng-show="!task.show_edit">
@@ -36,15 +41,15 @@
                </div>
            </div>
            <div ng-show="task.show_edit">
-               <input class="form-control" ng-model="task.description">
-               <button ng-click="saveTask(task); task.show_edit = false;" class="default-margin btn btn-primary pull-right">Save</button>
+               <input ng-init="task.description_new = task.description" class="form-control" ng-model="task.description_new">
+               <button ng-disabled="task.description == undefined || task.description.length < 1" ng-click="saveTask(task); task.show_edit = false;" class="default-margin btn btn-primary pull-right">Save</button>
                <button ng-click="task.show_edit = false;" class="default-margin btn pull-right">Cancel</button>
            </div>
            <div class="row">
-               <div class="col-lg-12 col-md-12 col-sm-12 row-card" ng-repeat="subtask in task.subtasks track by $index">
+               <div style="margin-left:50px; margin-top:20px;" class="col-lg-11 col-md-11 col-sm-11 row-card" ng-repeat="subtask in task.subtasks track by $index">
                    <div ng-if="subtask.id == undefined">
                        <textarea class="form-control" placeholder="Add Subtak descrption" ng-model="subtask.description"></textarea>
-                       <button class="default-margin btn btn-primary pull-right" ng-click="addSubTask(task.id, subtask); ">Submit
+                       <button class="default-margin btn btn-primary pull-right" ng-disabled="subtask.description == undefined || subtask.description.length < 1" ng-click="addSubTask(task.id, subtask); ">Submit
                        </button>
                        <button class="default-margin btn pull-right" ng-click="task.subtasks.splice($index, 1)">Cancel
                        </button>
