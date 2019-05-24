@@ -3,6 +3,7 @@ package com.collpoll.assignment.todoList.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /*@Author : Santosh Kumar
 ***@Subtak table has a FOREIGN KEY (task_id) which refrence to (id) of Task table;
@@ -15,11 +16,11 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name = "subtask", catalog = "santo_db")
+@Table(name = "subtask", catalog = "m_db")
 public class SubTask {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Integer id;
 

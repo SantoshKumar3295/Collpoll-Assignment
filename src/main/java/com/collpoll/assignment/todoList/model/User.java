@@ -3,6 +3,7 @@ package com.collpoll.assignment.todoList.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /*@Author : Santosh Kuamr
@@ -11,11 +12,11 @@ import java.util.List;
  */
 
 @Entity
-@Table(name = "users", catalog = "santo_db")
+@Table(name = "users", catalog = "m_db")
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Integer id;
 
