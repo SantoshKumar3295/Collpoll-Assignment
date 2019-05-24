@@ -13,6 +13,6 @@ import java.util.List;
  */
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    @Query(value = "SELECT * FROM Users u WHERE name = :name and password = :password", nativeQuery = true)
+    @Query(value = "SELECT * FROM users u WHERE name = :name and password = :password", nativeQuery = true)
     public User getUser(@Param("name") String name, @Param("password") String password);
 }
