@@ -19,11 +19,23 @@ public class UserResource  {
 
     @PostMapping(value = "/login")
     public User loginUser(@RequestBody final User user) {
+        if(validateForm(user)) return null;
         return userRepository.getUser(user.getName(), user.getPassword());
+    }
+
+    //Validate username & password
+    public boolean validateForm(User user) {
+        boolean name = user.getName() == null || user.getName().isEmpty();
+        boolean password = user.getPassword() == null || user.getPassword().isEmpty();
+
+        return name || password;
     }
 
     @PostMapping(value = "/createUser")
     public User createuser(@RequestBody final User user) {
+
+        if(validateForm(user)) return null;
+
         User user_check = userRepository.getUser(user.getName(), user.getPassword());
         //check if user is already present
         if(user_check == null)

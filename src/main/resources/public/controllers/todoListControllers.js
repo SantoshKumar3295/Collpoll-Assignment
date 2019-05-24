@@ -4,19 +4,30 @@ app.controller('UserLoginController', function($timeout, $scope, $http, $locatio
 
       //Create user
       $scope.create = function() {
+        if(baseCheckNull()) {
+            return;
+        }
         $http.post('createUser', $scope.user_obj)
             .then(function successCallBack(response) {
                 initUser(response);
             })
       }
 
+      //Check if we have empty fields for username and password
+      function baseCheckNull() {
+        var obj = $scope.user_obj;
+        console.log(obj.name, obj.password);
+        var name_check = $scope.user_obj.name == undefined || $scope.user_obj.name.length < 1;
+        var password_check = $scope.user_obj.password == undefined || $scope.user_obj.password.length < 1;
+
+         return (name_check || password_check)
+      }
+
       //Login user
       $scope.login = function() {
-         var name_check = $scope.user_obj.name == undefined || $scope.user_obj.name.length < 1;
-         var password_check = $scope.user_obj.password == undefined || $scope.user_obj.password.length < 1;
-
-         if(name_check || password_check) return;
-
+         if(baseCheckNull()) {
+            return;
+         }
          $http.post('login', $scope.user_obj)
             .then(function successCallBack(response) {
                 initUser(response);
