@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
  */
 
 @Entity
-@Table(name = "subtask", catalog = "m_db")
+@Table(name = "subtask")
 public class SubTask {
 
     @Id

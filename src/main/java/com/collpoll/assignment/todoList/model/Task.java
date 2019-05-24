@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 @Entity
-@Table(name = "task", catalog = "m_db")
+@Table(name = "task")
 public class Task {
 
     @Id
