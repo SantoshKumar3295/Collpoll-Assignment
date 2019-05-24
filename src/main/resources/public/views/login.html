@@ -3,7 +3,10 @@
     <div class="row">
         <input ng-model="user_obj.name" placeholder="Username" class="pull-left default-margin">
         <input type="password" ng-model="user_obj.password" placeholder="password" class="default-margin pull-left">
-        <button ng-click="login()" class="btn btn-primary pull-left" class="form-control default-margin" ng-disabled="user_obj.name == undefined || user_obj.password == undefined">Login</button>
-        <button ng-click="create()" class="btn btn-primary pull-left default-margin" ng-disabled="user_obj.name == undefined || user_obj.password == undefined">Create</button>
+        <button ng-click="login()" class="btn btn-primary pull-left" class="form-control default-margin" ng-disabled="baseCheckNull()">Login</button>
+        <button ng-click="create()" class="btn btn-primary pull-left default-left" ng-disabled="baseCheckNull()">Create</button>
+    </div>
+    <div class="row" ng-if="show_login_error != undefined || show_login_error.length < 1">
+        <h4 style="color : red;">{{show_login_error}}</h4>
     </div>
 </div>

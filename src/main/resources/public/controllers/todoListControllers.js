@@ -4,38 +4,35 @@ app.controller('UserLoginController', function($timeout, $scope, $http, $locatio
 
       //Create user
       $scope.create = function() {
-        if(baseCheckNull()) {
+        if($scope.baseCheckNull()) {
             return;
         }
         $http.post('createUser', $scope.user_obj)
             .then(function successCallBack(response) {
-                initUser(response);
+                initUser(response, false);
             })
       }
 
       //Check if we have empty fields for username and password
-      function baseCheckNull() {
-        var obj = $scope.user_obj;
-        console.log(obj.name, obj.password);
+      $scope.baseCheckNull = function() {
         var name_check = $scope.user_obj.name == undefined || $scope.user_obj.name.length < 1;
         var password_check = $scope.user_obj.password == undefined || $scope.user_obj.password.length < 1;
-
-         return (name_check || password_check)
+        return (name_check || password_check)
       }
 
       //Login user
       $scope.login = function() {
-         if(baseCheckNull()) {
+         if($scope.baseCheckNull()) {
             return;
          }
          $http.post('login', $scope.user_obj)
             .then(function successCallBack(response) {
-                initUser(response);
+                initUser(response, true);
             })
       }
 
       //Start initialising user object
-      function initUser(response) {
+      function initUser(response, isLogin) {
             var user = response.data;
             console.log("user data", user);
             if(user && user.id) {
@@ -49,6 +46,12 @@ app.controller('UserLoginController', function($timeout, $scope, $http, $locatio
                 $timeout(function() {
                     $location.path('/allTask');
                 }, 10);
+            } else {
+                if(isLogin) {
+                    $scope.show_login_error = "Given username & password doesn't exist, please click on CREATE to create your account.";
+                } else {
+                    $scope.show_login_error = "Can't create your account, please try again."
+                }
             }
       }
 })

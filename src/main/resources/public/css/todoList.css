@@ -3,6 +3,10 @@
     float : left;
 }
 
+input {
+    padding : 3px !important;
+}
+
 .row-card {
     background-color: white;
     border: 1px solid lightgray;
@@ -17,4 +21,8 @@
 
 .default-margin {
     margin : 5px !important;
+}
+
+.default-left {
+    margin-left : 10px !important;
 }
